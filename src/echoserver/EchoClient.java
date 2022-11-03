@@ -20,4 +20,29 @@ public class EchoClient {
 
 		// Put your code here.
 	}
+
+
+	private class Input implements Runnable {
+		InputStream input;
+
+		public InputReader(InputStream inputStream) {
+			input = inputStream;
+		}
+
+		@Override
+		public void run() {
+			try {
+				int nextByteFromSystem = 0;
+
+      				// Reads the stream from the System and puts the stream into the output
+      				while ((nextByteFromSystem = input.read()) != -1) {
+      					System.out.write(nextByteFromSystem);
+					output.flush();
+					System.out.flush();
+      				}
+			} catch (IOException exception) {
+				System.out.println("Unexpected exception: "  + exception);
+			}
+		}
+	}
 }
