@@ -21,11 +21,33 @@ public class EchoClient {
 		// Put your code here.
 	}
 
+	private class Out implements Runnable {
+                OutputStream output;
 
-	private class Input implements Runnable {
+                public Out(OutputStream outputStream) {
+                        output = outputStream;
+                }
+
+                @Override
+                public void run() {
+                        try {
+                                int nextByteFromSystem = 0;
+                                // Reads the stream from the System and puts the stream into the output
+                                while ((nextByteFromSystem = System.in.read()) != -1) {
+                                        output.write(nextByte);
+                                        output.flush();
+                                        System.out.flush();
+                                }
+                        } catch (IOException exception) {
+                                System.out.println("Unexpected exception: "  + exception);
+                        }
+                }
+        }
+
+	private class In implements Runnable {
 		InputStream input;
 
-		public InputReader(InputStream inputStream) {
+		public In(InputStream inputStream) {
 			input = inputStream;
 		}
 
@@ -37,8 +59,6 @@ public class EchoClient {
       				// Reads the stream from the System and puts the stream into the output
       				while ((nextByteFromSystem = input.read()) != -1) {
       					System.out.write(nextByteFromSystem);
-					output.flush();
-					System.out.flush();
       				}
 			} catch (IOException exception) {
 				System.out.println("Unexpected exception: "  + exception);
